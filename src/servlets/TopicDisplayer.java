@@ -50,21 +50,27 @@ public class TopicDisplayer implements Servlet {
         int flag = 0;
 
         // Check if topic exists in the topics map, and it's not an output of an agent and the message is double
-        if (topics.containsKey(topicName) && tm.getTopic(topicName).getPubs().isEmpty() && !Double.isNaN(m.asDouble)) {
-            tm.getTopic(topicName).publish(m);
-            topics.put(topicName, m.asDouble);
-            updateTable();
+        if (topics.containsKey(topicName)) {
+            if (tm.getTopic(topicName).getPubs().isEmpty() && !Double.isNaN(m.asDouble)) {
+                tm.getTopic(topicName).publish(m);
+                topics.put(topicName, m.asDouble);
+                updateTable();
+            }
+            else{
+                flag++;
+            }
         } else {
             flag++;
+        }
+
+        if (flag==1){
             String errorMsg = null;
             if (!topics.containsKey(topicName)) {
                 errorMsg = "Topic does not exist. Please choose another topic.";
-            }
-            if (!tm.getTopic(topicName).getPubs().isEmpty()) {
-                errorMsg = "You have chosen a topic that cannot be written to.";
-            }
-            if (Double.isNaN(m.asDouble)) {
+            } else if(Double.isNaN(m.asDouble)) {
                 errorMsg = "The message is not of double type. Please enter a new message.";
+            } else {
+                errorMsg = "You have chosen a topic that cannot be written to.";
             }
 
             // Generate HTML for a popup window with an error message
@@ -85,7 +91,6 @@ public class TopicDisplayer implements Servlet {
             toClient.write(htmlResponse.toString().getBytes(StandardCharsets.UTF_8));
             toClient.flush();
         }
-
         Graph graph = new Graph();
         graph.createFromTopics();
 

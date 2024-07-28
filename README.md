@@ -5,7 +5,7 @@ The project employs a publisher-subscriber architecture to construct a computati
 
 ## Key Components
 
-*Agent: Interface defining core functionality for entities that publish and subscribe to topics.
+* Agent: Interface defining core functionality for entities that publish and subscribe to topics.
 *IncAgent, PlusAgent: Implementations of Agent for specific operations.
 *ParallelAgent: Wrapper enabling parallel processing of messages.
 *Message: Represents data exchanged between agents, supporting multiple formats.

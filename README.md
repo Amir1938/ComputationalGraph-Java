@@ -1,6 +1,7 @@
 # Advanced-Programming-Project : Computational Graph Visualization
+## Amir Ilan 
+## Maya Naor
 
-## Background
 This project is designed to provide a dynamic way to visualize various types of computational graphs. It utilizes Java, JavaScript, and HTML, allowing users to choose configurations and set variable values. The application enables users to load configuration files, modify graph values, and observe changes immediately.
 
 ## Features

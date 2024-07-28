@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Graph</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: candara, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        #canvasContainer {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .node text {
+            font-size: 20px;
+            font-weight: bold;
+            fill: white;
+        }
+
+        .link {
+            fill: none;
+            stroke: #999;
+            stroke-opacity: 0.6;
+            stroke-width: 2px;
+        }
+
+        .message {
+            font-size: 20px;
+            fill: #666;
+        }
+
+        .arrow {
+            fill: #999999;
+        }
+    </style>
+</head>
+<body>
+<div id="canvasContainer"></div>
+<script>
+
+    const nodesArray = [  { x: 600, y: 250, label: 'TA' },
+ { x: 500, y: 423, label: 'A+1' },
+ { x: 300, y: 423, label: 'TB' },
+ { x: 200, y: 250, label: 'TC' },
+ { x: 299, y: 76, label: 'A+11' },
+ { x: 500, y: 76, label: 'TD' },
+ ];;
+    const edgesArray = [  [ 'TA', 'A+1'],
+  [ 'A+1', 'TC'],
+  [ 'TB', 'A+1'],
+  [ 'TC', 'A+11'],
+  [ 'A+11', 'TD'],
+  ];
+    const messagesArray = [  [ 'TA', '0.0'],
+  [ 'TB', '0.0'],
+  [ 'TC', '0.0'],
+  [ 'TD', '0.0'],
+  ];
+
+    // Set up the SVG
+    const svg = d3.select("#canvasContainer")
+        .append("svg")
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .attr("viewBox", "0 0 800 500") // Initial viewbox dimensions
+        .attr("preserveAspectRatio", "xMidYMid meet"); // Preserve aspect ratio
+
+     // Define arrow markers
+    svg.append("defs").append("marker")
+        .attr("id", "arrowhead-circle")
+        .attr("viewBox", "-0 -5 10 10")
+        .attr("refX", 30)
+        .attr("refY", 0)
+        .attr("orient", "auto")
+        .attr("markerWidth", 6)
+        .attr("markerHeight", 6)
+        .attr("xoverflow", "visible")
+        .append("svg:path")
+        .attr("d", "M 0,-5 L 10 ,0 L 0,5")
+        .attr("fill", "#999")
+        .style("stroke", "none");
+
+    svg.append("defs").append("marker")
+        .attr("id", "arrowhead-rect")
+
+        .attr("viewBox", "-0 -5 10 10")
+        .attr("refX", 28)
+        .attr("refY", 0)
+        .attr("orient", "auto")
+        .attr("markerWidth", 6)
+        .attr("markerHeight", 6)
+        .attr("xoverflow", "visible")
+        .append("svg:path")
+
+        .attr("d", "M 0,-5 L 10 ,0 L 0,5")
+        .attr("fill", "#999")
+        .style("stroke", "none");
+
+
+// Create links with transition
+const links = svg.selectAll(".link")
+    .data(edgesArray)
+    .enter()
+    .append("line")
+    .attr("class", "link")
+    .attr("x1", d => nodesArray.find(node => node.label === d[0]).x + Math.random() * 200 - 25) // Random initial position
+    .attr("y1", d => nodesArray.find(node => node.label === d[0]).y + Math.random() * 200 - 25) // Random initial position
+    .attr("x2", d => nodesArray.find(node => node.label === d[1]).x + Math.random() * 200 - 25) // Random initial position
+    .attr("y2", d => nodesArray.find(node => node.label === d[1]).y + Math.random() * 200 - 25) // Random initial position
+    .attr("opacity", 0) // Initially invisible
+    .attr("marker-end", (d) => {
+        const targetNode = nodesArray.find(node => node.label === d[1]);
+        const targetShape = targetNode.label.startsWith('A') ? 'circle' : 'rect';
+        return `url(#arrowhead-${targetShape})`;
+    })
+    .transition()
+    .duration(1000)
+    .attr("x1", d => nodesArray.find(node => node.label === d[0]).x)
+    .attr("y1", d => nodesArray.find(node => node.label === d[0]).y)
+    .attr("x2", d => nodesArray.find(node => node.label === d[1]).x)
+    .attr("y2", d => nodesArray.find(node => node.label === d[1]).y)
+    .attr("opacity", 1); // Fade in links
+
+  // Create nodes with transition
+const nodes = svg.selectAll(".node")
+    .data(nodesArray)
+    .enter()
+    .append("g")
+    .attr("class", "node")
+    .attr("transform", d => `translate(${d.x + Math.random() * 200 - 25}, ${d.y + Math.random() * 200 - 25})`) // Random initial position
+    .attr("opacity", 0) // Initially invisible
+    .transition()
+    .duration(1000)
+    .attr("transform", d => `translate(${d.x},${d.y})`)
+    .attr("opacity", 1); // Fade in nodes
+
+
+    nodes.each(function(d) {
+        const node = d3.select(this);
+        const displayLabel = d.label.startsWith('A') ? d.label.slice(1, -1) :
+                         d.label.startsWith('T') ? d.label.slice(1) :
+                         d.label;
+        const text = node.append("text")
+            .attr("dy", ".35em")
+            .attr("text-anchor", "middle")
+            .text(displayLabel);
+
+        const bbox = text.node().getBBox();
+        const padding = 10;
+
+        if (d.label.startsWith('T')) {
+            node.insert("rect", "text")
+                .attr("width", bbox.width + padding * 2)
+                .attr("height", bbox.height + padding * 2)
+                .attr("x", -bbox.width / 2 - padding)
+                .attr("y", -bbox.height / 2 - padding)
+                .attr("rx", 5)
+                .attr("ry", 5)
+                .style("fill", "pink");
+        } else if (d.label.startsWith('A')) {
+            node.insert("circle", "text")
+                .attr("r", Math.max(bbox.width, bbox.height) / 2 + padding)
+                .style("fill", "lightblue");
+        }
+    });
+
+// Add messages with animation
+svg.selectAll(".message")
+    .data(messagesArray)
+    .enter()
+    .append("text")
+    .attr("class", "message")
+    .attr("x", d => {
+        const node = nodesArray.find(node => node.label === d[0]);
+        return node.x;
+    })
+    .attr("y", d => {
+        const node = nodesArray.find(node => node.label === d[0]);
+        return node.y - 25;
+    })
+    .attr("text-anchor", "middle")
+    .text(d => d[1])
+    .attr("opacity", 0) // Initially invisible
+    .transition()
+    .duration(2000)
+    .attr("opacity", 1); // Fade in messages
+
+    // Add zoom and pan functionality
+    const zoom = d3.zoom()
+        .scaleExtent([0.5, 3])
+        .on("zoom", (event) => {
+            svg.attr("transform", event.transform);
+        });
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computational Graph</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        header {
+            width: 100%;
+            background-color: #ADD8E6;
+            color: white;
+            text-align: center;
+            padding: 1em 0;
+            font-size: 2em;
+        }
+        main {
+            display: flex;
+            height: 100vh;
+        }
+        iframe {
+            height: 100%;
+            border: 1px solid #ccc;
+        }
+        .right-frame {
+            width: 20%;
+        }
+        .middle-frame {
+            width: 60%;
+        }
+        .left-frame {
+            width: 20%;
+            height: 80%;
+        }
+    </style>
+</head>
+<body>
+<header>
+    Computational Graph Visualization
+</header>
+<main>
+    <iframe id ="leftFrame" name="leftFrame" class="right-frame" src="temp.html" title="Left Frame" scrolling="no"></iframe>
+    <iframe id ="middleFrame" name="middleFrame" class="middle-frame" src="graph.html" title="Middle Frame" scrolling="no"></iframe>
+    <iframe id ="rightFrame" name="rightFrame" class="left-frame" src="form.html" title="Right Frame" scrolling="no"></iframe>
+</main>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Page</title>
+    <script>
+        function updateGraph() {
+   try {
+
+       // Access the parent window and then the middle frame
+       const middleFrame = parent.document.getElementById('middleFrame');
+       if (middleFrame) {
+           setTimeout(() => {
+               const timestamp = new Date().getTime();
+               middleFrame.src = 'graph1.html?t=' + timestamp;
+               console.log(middleFrame.src);
+           }, 100);
+       } else {
+           console.error('Middle frame not found');
+       }
+   } catch (error) {
+       console.error('Error updating graph:', error);
+   }
+}
+
+function resetTable() {
+   try {
+
+       // Access the parent window and then the middle frame
+       const leftFrame = parent.document.getElementById('leftFrame');
+       if (leftFrame) {
+           setTimeout(() => {
+               const timestamp = new Date().getTime();
+               leftFrame.src = '';
+               console.log(leftFrame.src);
+           }, 100);
+       } else {
+           console.error('Left frame not found');
+       }
+   } catch (error) {
+       console.error('Error updating graph:', error);
+   }
+
+}
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        form {
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        input[type="file"], input[type="text"] {
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+        input[type="submit"] {
+            background-color: #ADD8E6;
+            color: white;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+        input[type="submit"]:hover {
+            background-color: #ADD8E6;
+        }
+    </style>
+</head>
+<body>
+<h1 style="font-size: 1.5em;">Upload Configuration</h1>
+<form action="http://localhost:8080/upload" method="POST" enctype="multipart/form-data" target="middleFrame" onsubmit = "resetTable()">
+    <label for="filename">Choose configuration file:</label>
+    <input type="file" id="filename" name="filename" required>
+    <input type="submit" value="Deploy">
+</form>
+
+<h1 style="font-size: 1.5em;">Topic</h1>
+<form action="http://localhost:8080/publish" method="GET" target="leftFrame"  onsubmit="updateGraph()">
+    <label for="topic">Topic:</label>
+    <input type="text" id="topic" name="topic" required>
+    <label for="message">Message:</label>
+    <input type="text" id="message" name="message" required>
+    <input type="submit" value="Publish">
+</form>
+</body>
+</html>

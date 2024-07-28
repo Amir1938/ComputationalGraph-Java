@@ -1,18 +1,16 @@
-# Advanced-Programming-Project : Interactive Graph Visualization Tool
+# Advanced-Programming-Project : Computational Graph Visualization
 
 ## Background
-This project is designed to provide a dynamic and interactive way to visualize computational graphs. It leverages the power of D3.js for rendering graphical elements and Java for backend logic, including configuration management and topic message handling. The tool allows users to load configuration files, manipulate graph elements, and observe changes in real-time.
+This project is designed to provide a dynamic way to visualize various types of computational graphs. It utilizes Java, JavaScript, and HTML, allowing users to choose configurations and set variable values. The application enables users to load configuration files, modify graph values, and observe changes immediately.
 
 ## Features
-- **Dynamic Graph Visualization**: Utilizes D3.js to render nodes and edges, supporting interactive dragging and zooming.
-- **Configuration Management**: Allows users to upload and apply configuration files that define the structure and properties of the graph.
-- **Real-time Interaction**: Supports publishing messages to topics, with the graph updating to reflect these messages in real-time.
+- **Configuration Management: Enables users to upload and apply configuration files that define the graph’s structure and properties.
+- **Real-time Interaction: Allows users to publish messages to topics, with the graph dynamically updating to reflect these changes in real-time.
 
 ## Getting Started
 
 ### Prerequisites
 - Java JDK 11 or higher
-- A modern web browser with JavaScript enabled
 
 ### Running the Project
 

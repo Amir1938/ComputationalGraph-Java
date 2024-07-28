@@ -3,38 +3,49 @@ by: Amir Ilan and Maya Naor
 
 The project employs a publisher-subscriber architecture to construct a computational graph. This graph enables parallel execution of complex calculations by breaking them down into interconnected components. Each component's output serves as input for subsequent components, forming a dependency chain.
 
+## Key Components
+
+Agent: Interface defining core functionality for entities that can publish and subscribe to topics.
+IncAgent, PlusAgent: Implementations of Agent for specific operations.
+ParallelAgent: Wrapper enabling parallel processing of messages.
+Message: Represents data exchanged between agents, supporting multiple formats.
+Topic and TopicManagerSingleton: Manage topics and subscriptions.
+Graph and Node: Represent the graph structure of the system.
+
+### HTTP Server and Servlets
+MyHTTPServer: Implements a simple HTTP server that handles GET, POST, and DELETE requests.
+RequestParser: Parses HTTP requests and extracts relevant information.
+Servlet: Interface for handling HTTP requests.
+ConfLoader: Servlet for loading and processing configuration files.
+HtmlLoader: Servlet for serving HTML files.
+TopicDisplayer: Servlet for displaying topics and their messages in HTML format.
+
+### Configuration and Utilities
+GenericConfig: Reads configuration files to create agents.
+HtmlGraphWriter: Generates HTML representation of the graph structure.
+
 ## Features
-- **Configuration Management: Enables users to upload and apply configuration files that define the graph’s structure and properties.
-- **Real-time Interaction: Allows users to publish messages to topics, with the graph dynamically updating to reflect these changes in real-time.
+Asynchronous communication between components
+Support for multiple data formats
+Parallel processing of messages
+Thread-safe topic management
+Flexible publish-subscribe model
+Custom agent implementations
+Graph-based system representation and analysis
+Configuration file support for system setup
+Web-based interaction and visualization
+Dynamic topic updates and display
 
-## Getting Started
+## Usage
+1. Start the HTTP server:
 
-### Prerequisites
-- Java JDK 11 or higher
+```java
+MyHTTPServer server = new MyHTTPServer(8080, 10);
+server.addServlet("GET", "/html", new HtmlLoader("html_files"));
+server.addServlet("POST", "/conf", new ConfLoader());
+server.addServlet("GET", "/topics", new TopicDisplayer());
+server.start();
 
-### Running the Project
-
-1. **Clone the Repository**
-   ```bash
-   git clone https://github.com/your-username/your-project-repo.git
-   cd your-project-repo
-
-
-## How to run it:
-1. Compile the Java Code Navigate to the project directory and compile the Java code.
-   <pre>javac -d bin src/**/*.java </pre>
-2. Start the Server Run the MainTrain class to start the server.
-   <pre>java -cp bin graph.MainTrain </pre>
-3. Access the Application Open a web browser and navigate to http://localhost:8080/app/index.html to access the application interface.
-
-## Commands
-- Upload Configuration: Use the "Upload" button in the application interface to load a .conf file that defines the graph structure.
-- Interact with the Graph: Click and drag nodes to reposition them. Use the interface to publish messages to topics and observe the graph's response.
-- Deploy New Configuration: After modifying or uploading a new configuration file, use the "Deploy" button to apply changes to the graph.
-
-## How It Works
-- Backend: The Java backend handles HTTP requests, manages configurations, and processes topic messages. It dynamically updates the graph structure based on the configuration files and messages received.
-- Frontend: The D3.js library renders the graph based on the data provided by the backend. It supports interactive manipulation of the graph elements.
 
 ## Project Demo link:
 https://youtu.be/P1d6o3oAgMw

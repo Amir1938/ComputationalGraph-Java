@@ -5,7 +5,7 @@ The project employs a publisher-subscriber architecture to construct a computati
 
 ## Key Components
 
-Agent: Interface defining core functionality for entities that can publish and subscribe to topics. \n
+Agent: Interface defining core functionality for entities that can publish and subscribe to topics.
 IncAgent, PlusAgent: Implementations of Agent for specific operations.
 ParallelAgent: Wrapper enabling parallel processing of messages.
 Message: Represents data exchanged between agents, supporting multiple formats.
@@ -46,6 +46,16 @@ server.addServlet("POST", "/conf", new ConfLoader());
 server.addServlet("GET", "/topics", new TopicDisplayer());
 server.start();
 ```
+2. Load configuration: POST a configuration file to `/conf`
+3. View system state:
+
+GET /topics to see current topic values
+GET /html/graph.html to view the graph structure
+
+
+Update topic values:
+
+GET /topics?topic=TOPIC_NAME&message=VALUE
 
 ## Project Demo link:
 https://youtu.be/P1d6o3oAgMw

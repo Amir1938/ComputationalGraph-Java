@@ -78,7 +78,7 @@ server.addServlet("GET", "/topics", new TopicDisplayer());
 server.start();
 ```
 2. Access the web interface:
-Open a web browser and navigate to `http://localhost:8080/app/index.html`
+Open a web browser and navigate to `http://localhost:8080/html/index.html`
 
 3. Upload configuration: Use the "Upload Configuration" form to select and upload a configuration file
 4. View and interact with the system:

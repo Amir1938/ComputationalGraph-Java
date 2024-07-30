@@ -72,13 +72,13 @@ sum_output_topic
 1. Start the HTTP server:
  ```java
 MyHTTPServer server = new MyHTTPServer(8080, 10);
-server.addServlet("GET", "/html", new HtmlLoader("html_files"));
-server.addServlet("POST", "/conf", new ConfLoader());
-server.addServlet("GET", "/topics", new TopicDisplayer());
+server.addServlet("GET", "/app/", new HtmlLoader("html_files"));
+server.addServlet("POST", "/upload", new ConfLoader());
+server.addServlet("GET", "/publish", new TopicDisplayer());
 server.start();
 ```
 2. Access the web interface:
-Open a web browser and navigate to `http://localhost:8080/html/index.html`
+Open a web browser and navigate to `http://localhost:8080/app/index.html`
 
 3. Upload configuration: Use the "Upload Configuration" form to select and upload a configuration file
 4. View and interact with the system:
